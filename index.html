@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
     <nav>
         <ul>
             <li><a href="#section1">Section 1</a></li>
@@ -43,4 +42,13 @@
     </section>
 
 </body>
+
+<script type="module">
+
+    const dataResponse = await fetch("./data.json");
+    const data = await dataResponse.json();
+    console.log(data)
+
+</script>
+
 </html>
