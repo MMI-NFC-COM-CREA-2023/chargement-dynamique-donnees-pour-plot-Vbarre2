@@ -3,52 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu avec ancres et sections</title>
+    <title>Graphiques et Sections</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <nav>
         <ul>
-            <li><a href="#section1">Section 1</a></li>
-            <li><a href="#section2">Section 2</a></li>
+            <li><a href="#section1">Fréquence des Lettres</a></li>
+            <li><a href="#section2">Répartition des Diamants</a></li>
         </ul>
     </nav>
 
     <section id="section1">
-        <h2>Section 1 : Titre</h2>
+        <h2>Fréquence des Lettres dans la Langue Anglaise</h2>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Ce graphique représente la fréquence d'apparition de chaque lettre dans la langue anglaise. 
+            Ces données peuvent être utiles pour des analyses linguistiques ou cryptographiques.
         </p>
         <figure>
-            <figcaption>Légende 1</figcaption>
+            <figcaption>Fréquence des lettres de A à Z dans la langue anglaise</figcaption>
         </figure>
         <div id="graph1" class="graph">
-            Graphique 1
+            <!-- Graphique 1 (Fréquence des lettres) sera affiché ici -->
         </div>
     </section>
 
     <section id="section2">
-        <h2>Section 2 : Titre</h2>
+        <h2>Répartition des Diamants par Couleur et Clarté</h2>
         <p>
-            Etiam sed consectetur convallis libero eget at congue porta justo. Cursus vestibulum ullamcorper parturient morbi scelerisque posuere orci? Placerat eros congue, sem potenti molestie fermentum vulputate. Metus pellentesque mauris mauris aptent auctor donec. Elementum magna semper mollis sed, blandit proin. Ut aenean placerat sollicitudin a nam ut ut curae nisl.
+            Ce graphique montre la répartition des diamants en fonction de leur couleur et de leur clarté. 
+            Ces informations sont essentielles dans l'industrie du diamant pour évaluer la qualité et la valeur des pierres précieuses.
         </p>
         <figure>
-            <figcaption>Légende 2</figcaption>
+            <figcaption>Répartition des diamants par couleur et niveau de clarté</figcaption>
         </figure>
         <div id="graph2" class="graph">
-            Graphique 2
+            <!-- Graphique 2 (Répartition des diamants) sera affiché ici -->
         </div>
     </section>
 
 </body>
 
 <script type="module">
+    import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
-    const dataResponse = await fetch("./data.json");
-    const data = await dataResponse.json();
-    console.log(data)
+    // Chargement des données pour le premier graphique (Fréquence des lettres)
+    const dataResponse1 = await fetch("alphabet.json");
+    const data1 = await dataResponse1.json();
+    console.log(data1);
 
+    const plot1 = Plot.plot({
+      marks: [Plot.dot(data1, { x: "letter", y: "frequency", tip: true })],
+      x: { label: "Lettre" },
+      y: { label: "Fréquence" },
+      color: { legend: false }
+    });
+
+    const div1 = document.querySelector("#graph1");
+    div1.append(plot1);
+
+    // Chargement des données pour le deuxième graphique (Diamants)
+    const dataResponse2 = await fetch("diamond.json");
+    const data2 = await dataResponse2.json();
+    console.log(data2);
+
+    const plot2 = Plot.plot({
+      color: { legend: true },
+      marks: [
+        Plot.dot(
+          data2,
+          Plot.group(
+            { r: "count" },
+            { x: "color", y: "clarity", stroke: "clarity", tip: true }
+          )
+        )
+      ],
+      x: { label: "Couleur" },
+      y: { label: "Clarté" }
+    });
+
+    const div2 = document.querySelector("#graph2");
+    div2.append(plot2);
 </script>
-
 </html>
