@@ -1,3 +1,3 @@
 - nom : Barré  
 - prénom : Vincent
-- URL du site :
+- URL du site : https://chargementdynamique.netlify.app
